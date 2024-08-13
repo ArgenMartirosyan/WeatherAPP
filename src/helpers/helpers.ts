@@ -1,10 +1,19 @@
-export const customFloor = (num: number): number => {
-  const decimalPart = num % 1;
+import { UNITS } from '../constants/unit.contsnts';
+import { DailyWeather } from '../store/reducers/weather/weather.types';
+
+const { FAHREN } = UNITS;
+
+export const customFloor = (num: number, unit: string): number => {
+  let result = num;
+  if (unit === FAHREN) {
+    result = (num * 9) / 5 + 32;
+  }
+  const decimalPart = result % 1;
 
   if (decimalPart > 0.5) {
-    return Math.ceil(num);
+    return Math.ceil(result);
   } else {
-    return Math.floor(num);
+    return Math.floor(result);
   }
 };
 
@@ -12,7 +21,13 @@ export const getWeatherIconUrl = (iconName: string): string => {
   return `https://openweathermap.org/img/wn/${iconName}@2x.png`;
 };
 
-export const getHourlyWeatherForCurrentDate = (currentDt: number, dailyList: any[]): any[] => {
+export const getHourlyWeatherForCurrentDate = (
+  currentDt: number | undefined,
+  dailyList: DailyWeather[],
+): DailyWeather[] => {
+  if (!currentDt) {
+    return [];
+  }
   const currentDate = new Date(currentDt * 1000);
 
   return dailyList.filter((hourly) => {
@@ -26,7 +41,7 @@ export const getHourlyWeatherForCurrentDate = (currentDt: number, dailyList: any
   });
 };
 
-export const getUniqueDaysWithWeatherData = (dailyWeatherList: any[]): any[] => {
+export const getUniqueDaysWithWeatherData = (dailyWeatherList: DailyWeather[]): DailyWeather[] => {
   const uniqueDays = new Set<string>();
 
   return dailyWeatherList.filter((dailyWeather) => {
@@ -43,8 +58,6 @@ export const getUniqueDaysWithWeatherData = (dailyWeatherList: any[]): any[] => 
 
 export const extractMonthDay = (dateTimeString: string): string => {
   const datePart = dateTimeString.split(' ')[0];
-
-  const [_, month, day] = datePart.split('-');
-
+  const [, month, day] = datePart.split('-');
   return `${month}-${day}`;
 };

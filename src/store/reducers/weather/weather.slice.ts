@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import { TWeatherState } from './weather.types';
 import { RootState } from '../../store.types';
 import { fetchCurrentWeather, fetchDailyWeather } from './weather.thunk';
+import { UNITS } from '../../../constants/unit.contsnts';
+
+const { CELCIUS, FAHREN } = UNITS;
 
 const initialState: TWeatherState = {
   country: 'Yerevan',
   prevCountry: '',
+  unit: CELCIUS,
   current: null,
   daily: [],
   status: 'idle',
@@ -21,6 +25,9 @@ const weatherSlice = createSlice({
         state.prevCountry = state.country;
       }
       state.country = action.payload;
+    },
+    setCurrentUnit: (state) => {
+      state.unit = state.unit === CELCIUS ? FAHREN : CELCIUS;
     },
     setCurrentWeatherData(state, action) {
       state.current = action.payload;
@@ -57,12 +64,13 @@ const weatherSlice = createSlice({
 
 // ACTIONS
 
-export const { setWeatherCountry, setCurrentWeatherData } = weatherSlice.actions;
+export const { setWeatherCountry, setCurrentUnit, setCurrentWeatherData } = weatherSlice.actions;
 
 // SELECTORS
 
 export const selectWeatherCountry = (state: RootState) => state.weather.country;
 export const selectPrevCountry = (state: RootState) => state.weather.prevCountry;
+export const selectWeatherUnit = (state: RootState) => state.weather.unit;
 export const selectWeatherStatus = (state: RootState) => state.weather.status;
 export const selectCurrentWeather = (state: RootState) => state.weather.current;
 export const selectDailyWeather = (state: RootState) => state.weather.daily;

@@ -10,7 +10,7 @@ export const SearchBarForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  border: none;
 `;
 
 export const SearchBarInput = styled.input`

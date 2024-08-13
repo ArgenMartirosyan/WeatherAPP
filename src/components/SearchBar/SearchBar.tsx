@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { SearchBarContainer, SearchBarForm, SearchBarInput } from './SearchBar.styled';
+import {
+  SearchBarButton,
+  SearchBarContainer,
+  SearchBarForm,
+  SearchBarInput,
+} from './SearchBar.styled';
 import { useAppDispatch } from '../../store/hooks/redux.hooks';
 import { setWeatherCountry } from '../../store/reducers/weather/weather.slice';
 
@@ -25,7 +30,7 @@ const SearchBar: React.FC = () => {
           value={searchInput}
           onChange={handleInputChange}
         />
-        <button type="submit">Search</button>
+        <SearchBarButton type="submit">Search</SearchBarButton>
       </SearchBarForm>
     </SearchBarContainer>
   );

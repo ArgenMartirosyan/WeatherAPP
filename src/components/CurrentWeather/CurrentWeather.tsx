@@ -11,25 +11,32 @@ import { useSelector } from 'react-redux';
 import {
   selectCurrentWeather,
   selectWeatherCountry,
+  selectWeatherUnit,
 } from '../../store/reducers/weather/weather.slice';
 import { customFloor, getWeatherIconUrl } from '../../helpers/helpers';
-
-// interface Props {}
 
 const CurrentWeather: React.FC = () => {
   const currentWeatherInfo = useSelector(selectCurrentWeather);
   const country = useSelector(selectWeatherCountry);
+  const unit = useSelector(selectWeatherUnit);
+
+  if (!currentWeatherInfo) {
+    return <div>No weather information available</div>;
+  }
 
   const { main, weather } = currentWeatherInfo;
 
-  const flooredTemp = customFloor(main.temp);
+  const flooredTemp = customFloor(main.temp, unit);
   const icon = getWeatherIconUrl(weather[0].icon);
   const description = weather[0].main;
 
   return (
     <CurrentWeatherContainer>
       <CurrentCity>{country}</CurrentCity>
-      <CurrentWeatherTemp>{flooredTemp}°C</CurrentWeatherTemp>
+      <CurrentWeatherTemp>
+        {flooredTemp}
+        {unit}
+      </CurrentWeatherTemp>
       <CurrentWeatherIconContainer>
         <CurrentWeatherIcon src={icon} />
       </CurrentWeatherIconContainer>
